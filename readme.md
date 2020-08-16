@@ -19,7 +19,7 @@ import (
 )
 
 realtimeLength := 1
-_s := service.NewService(s,realtimeLength)
+d := service.NewDevice(opts,vu)
 
 ```
 
