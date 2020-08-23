@@ -3,7 +3,6 @@ package device
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"time"
 
 	"github.com/go-benchmark/service"
@@ -81,8 +80,6 @@ func (d *Device) resStartService(ctx context.Context, mc mqtter, cfgPayload cfgP
 	if err = d.pub(ctx, opStateTopic, 1, cBytes); err != nil {
 		return
 	}
-
-	log.Printf("[%d] responded configuration:%s \n", d.vu, string(cBytes))
 
 	return
 }

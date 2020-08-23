@@ -15,8 +15,10 @@ import (
 	"github.com/go-benchmark/service"
 	"github.com/gobench-io/gobench/clients/http"
 	"github.com/gobench-io/gobench/clients/mqtt"
+	"github.com/gobench-io/gobench/logger"
 )
 
+var log *logger.Log
 var (
 	//ErrServiceNotFound Error service not found
 	ErrServiceNotFound = errors.New("service not found")
@@ -42,6 +44,7 @@ type Device struct {
 	runServiceDelay int
 	historyInterval float64
 	dc              defaultConfig
+	log             *logger.Log
 }
 type defaultConfig struct {
 	realtimeInterval float64
@@ -73,6 +76,7 @@ func NewDevice(opts *config.Options, vu int) (*Device, error) {
 	d := &Device{
 		ID:       faker.UUIDDigit(),
 		services: make(map[string]*service.Service),
+		log = logger.NewStdLogger(),
 	}
 
 	d.setOpts(opts, vu)

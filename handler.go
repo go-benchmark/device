@@ -7,9 +7,7 @@ import (
 
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/go-benchmark/service"
-	"github.com/gobench-io/gobench/logger"
 )
-var log *logger.Log
 type engineMsg struct {
 	Realtime       bool `json:"realtime"`
 	RealtimeLength int  `json:"realtimeLength"`
@@ -52,12 +50,9 @@ func (d *Device) handleConfigPayload(ctx context.Context, mc mqtter, payload []b
 }
 
 func (d *Device) handleConfig(ctx context.Context) func(paho.Client, paho.Message) {
-	if log == nil {
-		log = logger.NewStdLogger()
-	}
 	return func(client paho.Client, msg paho.Message) {
 		if err := d.handleConfigPayload(ctx, &d.mc, msg.Payload()); err != nil {
-			log.Errorw("FAILED handleConfigPayload","device", d, "error", err)
+			d.log.Errorw("FAILED handleConfigPayload","device", d, "error", err)
 		}
 	}
 }

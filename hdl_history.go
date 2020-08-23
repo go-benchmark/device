@@ -3,7 +3,6 @@ package device
 import (
 	"context"
 	"errors"
-	"log"
 )
 
 func (d *Device) resHistory(ctx context.Context, mc mqtter, serviceID string) (err error) {
@@ -20,7 +19,7 @@ func (d *Device) resHistory(ctx context.Context, mc mqtter, serviceID string) (e
 	topic := d.opStateTopic()
 
 	if err = d.pub(ctx, topic, 1, hBytes); err != nil {
-		log.Printf("error publish mqtt history message: %v \n", err)
+		d.log.Errorw("FAILED error publish mqtt history message","device", d, "error", err)
 		return
 	}
 
