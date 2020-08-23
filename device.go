@@ -76,7 +76,7 @@ func NewDevice(opts *config.Options, vu int) (*Device, error) {
 	d := &Device{
 		ID:       faker.UUIDDigit(),
 		services: make(map[string]*service.Service),
-		log = logger.NewStdLogger(),
+		log : logger.NewStdLogger(),
 	}
 
 	d.setOpts(opts, vu)
