@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/go-benchmark/service"
+	"github.com/gobench-io/gobench/logger"
 )
-
+var log *logger.Log
 type engineMsg struct {
 	Realtime       bool `json:"realtime"`
 	RealtimeLength int  `json:"realtimeLength"`
@@ -56,7 +56,10 @@ func (d *Device) handleConfig(ctx context.Context) func(paho.Client, paho.Messag
 		log.Printf("[%d] config handler receiving: %s\n", d.vu, string(msg.Payload()))
 
 		if err := d.handleConfigPayload(ctx, &d.mc, msg.Payload()); err != nil {
-			log.Printf("failed handleConfigPayload: %v\n", err)
+			if log == nil {
+				log = logger.NewStdLogger()
+			}
+			log.Errorw("FAILED handleConfigPayload","device", d, "error", err)
 		}
 	}
 }
