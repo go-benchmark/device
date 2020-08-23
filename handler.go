@@ -52,13 +52,11 @@ func (d *Device) handleConfigPayload(ctx context.Context, mc mqtter, payload []b
 }
 
 func (d *Device) handleConfig(ctx context.Context) func(paho.Client, paho.Message) {
+	if log == nil {
+		log = logger.NewStdLogger()
+	}
 	return func(client paho.Client, msg paho.Message) {
-		log.Printf("[%d] config handler receiving: %s\n", d.vu, string(msg.Payload()))
-
 		if err := d.handleConfigPayload(ctx, &d.mc, msg.Payload()); err != nil {
-			if log == nil {
-				log = logger.NewStdLogger()
-			}
 			log.Errorw("FAILED handleConfigPayload","device", d, "error", err)
 		}
 	}
@@ -75,6 +73,5 @@ func (d *Device) pub(ctx context.Context, topic string, qos byte, payload []byte
 		// use default topic
 		topic = d.opStateTopic()
 	}
-	log.Printf("{dev_pub}-id: %s |topic: %s |payload: %v", d.ID, topic, string(payload))
 	return d.mc.Publish(ctx, topic, qos, payload)
 }
