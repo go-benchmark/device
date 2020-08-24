@@ -18,7 +18,6 @@ import (
 	"github.com/gobench-io/gobench/logger"
 )
 
-var log *logger.Log
 var (
 	//ErrServiceNotFound Error service not found
 	ErrServiceNotFound = errors.New("service not found")
@@ -72,11 +71,11 @@ type DeviceReq struct {
 }
 
 // NewDevice create a new device
-func NewDevice(opts *config.Options, vu int) (*Device, error) {
+func NewDevice(opts *config.Options, vu int,log *logger.Log) (*Device, error) {
 	d := &Device{
 		ID:       faker.UUIDDigit(),
 		services: make(map[string]*service.Service),
-		log : logger.NewStdLogger(),
+		log :     log,
 	}
 
 	d.setOpts(opts, vu)

@@ -15,7 +15,7 @@ func newDevice(t *testing.T) *Device {
 	vu := 1
 	opts, err := config.ConfigureOptions(vu)
 	assert.Nil(t, err)
-	d, err := NewDevice(opts, 1)
+	d, err := NewDevice(opts, 1,nil)
 	assert.Nil(t, err)
 
 	return d
