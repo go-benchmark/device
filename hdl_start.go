@@ -45,7 +45,10 @@ func (d *Device) cfgStartService(ctx context.Context, mc mqtter, cp cfgPayload) 
 			case <-ctx.Done():
 				return
 			default:
-				dis.SleepRatePoisson(1.0 / float64(d.historyInterval))
+				t := dis.SleepRatePoisson(1.0 / float64(d.historyInterval))
+				if t < 1000000 {
+					dis.SleepRateLinear(1.0 / 1.0)
+				}
 				d.resHistory(ctx, mc, cp.ServiceID)
 			}
 		}
